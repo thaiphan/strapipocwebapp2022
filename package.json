@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^15.12.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
+    "contentful": "^10.0.0-beta-v10.8",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.2",
     "next": "13.0.2",
