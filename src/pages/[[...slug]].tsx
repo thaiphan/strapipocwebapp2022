@@ -7,6 +7,7 @@ import stringify from "fast-safe-stringify";
 import { Gallery } from "modules/Gallery";
 import { Franchise } from "modules/Franchise";
 import { RichText } from "modules/RichText";
+import { Copy } from "modules/Copy";
 
 interface HomeProps {
   id: string;
@@ -21,6 +22,12 @@ type Section =
       title: string;
       description: Document;
       type: "componentRichText";
+    }
+  | {
+      id: string;
+      title: string;
+      description: Document;
+      type: "componentCopy";
     }
   | {
       id: string;
@@ -50,6 +57,8 @@ export default function Home(props: HomeProps) {
       <main className={styles.main}>
         {props.sections.map((section) => {
           switch (section.type) {
+            case "componentCopy":
+              return <Copy key={section.id} {...section} />;
             case "componentRichText":
               return <RichText key={section.id} {...section} />;
             case "componentFranchise":
@@ -73,6 +82,7 @@ interface ContentfulPage {
 }
 
 type ContentfulPageSection =
+  | ContentfulPageSectionCopy
   | ContentfulPageSectionRichText
   | ContentfulPageSectionFranchise
   | ContentfulPageSectionGallery;
@@ -102,6 +112,21 @@ interface ContentfulPageSectionFranchise {
     contentType: {
       sys: {
         id: "componentFranchise";
+      };
+    };
+  };
+}
+
+interface ContentfulPageSectionCopy {
+  fields: {
+    title: string;
+    description: Document;
+  };
+  sys: {
+    id: string;
+    contentType: {
+      sys: {
+        id: "componentCopy";
       };
     };
   };
@@ -164,6 +189,7 @@ export const getStaticProps: GetStaticProps<
   if (response.items.length === 0) {
     return {
       notFound: true,
+      revalidate: 10,
     };
   }
 
@@ -177,6 +203,17 @@ export const getStaticProps: GetStaticProps<
       sections: entry.fields.sections
         ? entry.fields.sections.map((section) => {
             if (isRichTextSection(section)) {
+              // Hack to resolve circular dependency issue
+              const fields: typeof section.fields = JSON.parse(
+                stringify(section.fields)
+              );
+
+              return {
+                ...fields,
+                id: section.sys.id,
+                type: section.sys.contentType.sys.id,
+              };
+            } else if (isCopySection(section)) {
               // Hack to resolve circular dependency issue
               const fields: typeof section.fields = JSON.parse(
                 stringify(section.fields)
@@ -218,6 +255,7 @@ export const getStaticProps: GetStaticProps<
           })
         : [],
     },
+    revalidate: 10,
   };
 };
 
@@ -225,6 +263,11 @@ const isRichTextSection = (
   b: ContentfulPageSection
 ): b is ContentfulPageSectionRichText =>
   b.sys.contentType.sys.id === "componentRichText";
+
+const isCopySection = (
+  b: ContentfulPageSection
+): b is ContentfulPageSectionCopy =>
+  b.sys.contentType.sys.id === "componentCopy";
 
 const isFranchiseSection = (
   b: ContentfulPageSection
