@@ -23,6 +23,10 @@ const options: Options = {
           src={`https:${node.data.target.fields.file.url}`}
           height={node.data.target.fields.file.details.image.height}
           width={node.data.target.fields.file.details.image.width}
+          style={{
+            objectFit: "cover",
+            maxWidth: "100%",
+          }}
         />
       );
     },

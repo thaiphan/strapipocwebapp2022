@@ -1,0 +1,53 @@
+.root {
+    background-color: #aaaaaa;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #EEEEEE;
+    min-height: 640px;
+    padding: 48px;
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+.root:nth-child(2) {
+    justify-content: flex-end;
+}
+
+.background {
+    object-fit: cover;
+}
+
+.panel {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 24px;
+    max-width: 50%;
+}
+
+.panel a {
+    text-decoration: underline;
+}
+
+.panel a:hover,
+.panel a:focus {
+    text-decoration: none;
+}
+
+.panel > :first-child {
+    margin-top: 0;
+}
+
+.panel > :last-child {
+    margin-bottom: 0;
+}
+
+.cta {
+    background-color: white;
+    color: #111111;
+    display: inline-block;
+    margin-top: 16px;
+    padding: 16px 24px;
+}

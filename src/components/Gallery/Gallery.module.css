@@ -1,0 +1,15 @@
+.root {
+    background-color: #111111;
+    padding-bottom: 24px;
+    padding-top: 24px;
+    width: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1280px;
+
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+}
