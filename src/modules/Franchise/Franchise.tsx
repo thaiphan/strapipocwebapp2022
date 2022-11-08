@@ -32,14 +32,19 @@ export const Franchise = (props: FranchiseProps) => {
           : undefined,
       }}
     >
-      <div className={styles.panel}>
-        <h2>{props.title}</h2>
-        <RichText field={props.description} />
-        {props.ctaLink && props.ctaTitle ? (
-          <Link className={styles.cta} href={`/${props.ctaLink?.fields.slug}`}>
-            {props.ctaTitle}
-          </Link>
-        ) : null}
+      <div className={styles.container}>
+        <div className={styles.panel}>
+          <h2>{props.title}</h2>
+          <RichText field={props.description} />
+          {props.ctaLink && props.ctaTitle ? (
+            <Link
+              className={styles.cta}
+              href={`/${props.ctaLink?.fields.slug}`}
+            >
+              {props.ctaTitle}
+            </Link>
+          ) : null}
+        </div>
       </div>
     </section>
   );
