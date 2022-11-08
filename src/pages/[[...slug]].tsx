@@ -49,6 +49,9 @@ type Section =
 
 export default function Home(props: HomeProps) {
   const router = useRouter();
+  const { asPath, locale } = router;
+
+  const newLocale = locale === "en" ? "fr" : "en";
 
   return (
     <>
@@ -68,8 +71,8 @@ export default function Home(props: HomeProps) {
               <Link href="/about">About</Link>
             </li>
           </ul>
-          <Link href="/" locale={router.locale === "en" ? "fr" : "en"}>
-            {router.locale === "en" ? "FR" : "EN"}
+          <Link href={asPath} locale={newLocale}>
+            {newLocale.toUpperCase()}
           </Link>
         </div>
       </header>
