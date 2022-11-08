@@ -26,5 +26,5 @@ export default async function preview(
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({});
 
-  res.redirect(307, "/");
+  res.redirect(307, "/" + post.items[0].fields.slug.replace(/^\//g, ""));
 }
