@@ -13,13 +13,13 @@ const previewClient = contentful.createClient({
   host: "preview.contentful.com",
 });
 
-export const getAllEntries = () => {
+export const getAllPages = () => {
   return contentfulClient.getEntries<ContentfulPage>({
     content_type: "page",
   });
 };
 
-export const getEntryBySlug = (
+export const getPageBySlug = (
   slug: string = "/",
   locale = "en",
   preview = false

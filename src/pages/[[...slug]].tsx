@@ -1,8 +1,8 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import {
-  getAllEntries,
-  getEntryBySlug,
+  getAllPages,
+  getPageBySlug,
   isCopySection,
   isFranchiseSection,
   isRichTextSection,
@@ -82,7 +82,7 @@ export default function Home(props: HomeProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async (props) => {
-  const entries = await getAllEntries();
+  const entries = await getAllPages();
 
   return {
     paths: entries.items.map((item) => ({
@@ -98,7 +98,7 @@ export const getStaticProps: GetStaticProps<
   HomeProps,
   { slug?: string[] }
 > = async (props) => {
-  const response = await getEntryBySlug(
+  const response = await getPageBySlug(
     props.params?.slug?.join("/"),
     props.locale,
     props.preview

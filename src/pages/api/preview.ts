@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getEntryBySlug } from "lib/contentful";
+import { getPageBySlug } from "lib/contentful";
 
 export default async function preview(
   req: NextApiRequest,
@@ -12,7 +12,7 @@ export default async function preview(
   }
 
   // Fetch the headless CMS to check if the provided `slug` exists
-  const post = await getEntryBySlug(
+  const post = await getPageBySlug(
     Array.isArray(slug) ? slug.join("/") : slug,
     undefined,
     true
