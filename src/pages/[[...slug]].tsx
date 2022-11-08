@@ -107,6 +107,7 @@ export const getStaticProps: GetStaticProps<
   if (response.items.length === 0) {
     return {
       notFound: true,
+      revalidate: 30,
     };
   }
 
@@ -172,5 +173,6 @@ export const getStaticProps: GetStaticProps<
           })
         : [],
     },
+    revalidate: 30,
   };
 };
