@@ -5,6 +5,7 @@ import {
 import { BLOCKS, INLINES, type Document } from "@contentful/rich-text-types";
 import Link from "next/link";
 import Image from "next/image";
+import styles from "./RichText.module.css";
 
 interface RichTextProps {
   field: Document;
@@ -18,16 +19,24 @@ const options: Options = {
   renderNode: {
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
       return (
-        <Image
-          alt={node.data.target.fields.title}
-          src={`https:${node.data.target.fields.file.url}`}
-          height={node.data.target.fields.file.details.image.height}
-          width={node.data.target.fields.file.details.image.width}
+        <div
+          className={styles.imageContainer}
           style={{
-            objectFit: "cover",
-            maxWidth: "100%",
+            aspectRatio:
+              node.data.target.fields.file.details.image.width /
+              node.data.target.fields.file.details.image.height,
+            maxWidth: node.data.target.fields.file.details.image.width,
           }}
-        />
+        >
+          <Image
+            alt={node.data.target.fields.title}
+            src={`https:${node.data.target.fields.file.url}`}
+            fill
+            className={styles.image}
+            // height={node.data.target.fields.file.details.image.height}
+            // width={node.data.target.fields.file.details.image.width}
+          />
+        </div>
       );
     },
     [INLINES.ENTRY_HYPERLINK]: (node, children) => {

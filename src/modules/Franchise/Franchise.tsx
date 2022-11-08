@@ -1,6 +1,5 @@
 import { type Document } from "@contentful/rich-text-types";
 import { RichText } from "components/RichText";
-import Image from "next/image";
 import Link from "next/link";
 import styles from "./Franchise.module.css";
 
