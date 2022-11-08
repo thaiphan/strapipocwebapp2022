@@ -1,6 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { contentfulClient } from "lib/contentful";
+import {
+  getAllEntries,
+  getEntryBySlug,
+  isCopySection,
+  isFranchiseSection,
+  isRichTextSection,
+} from "lib/contentful";
 import styles from "styles/Home.module.css";
 import { type Document } from "@contentful/rich-text-types";
 import stringify from "fast-safe-stringify";
@@ -98,95 +104,8 @@ export default function Home(props: HomeProps) {
   );
 }
 
-interface ContentfulPage {
-  slug: string;
-  title: string;
-  sections?: ContentfulPageSection[];
-}
-
-type ContentfulPageSection =
-  | ContentfulPageSectionCopy
-  | ContentfulPageSectionRichText
-  | ContentfulPageSectionFranchise
-  | ContentfulPageSectionGallery;
-
-interface ContentfulPageSectionRichText {
-  fields: {
-    title: string;
-    description: Document;
-  };
-  sys: {
-    id: string;
-    contentType: {
-      sys: {
-        id: "componentRichText";
-      };
-    };
-  };
-}
-
-interface ContentfulPageSectionFranchise {
-  fields: {
-    title: string;
-    description: Document;
-  };
-  sys: {
-    id: string;
-    contentType: {
-      sys: {
-        id: "componentFranchise";
-      };
-    };
-  };
-}
-
-interface ContentfulPageSectionCopy {
-  fields: {
-    title: string;
-    description: Document;
-  };
-  sys: {
-    id: string;
-    contentType: {
-      sys: {
-        id: "componentCopy";
-      };
-    };
-  };
-}
-
-interface ContentfulPageSectionGallery {
-  fields: {
-    photos: {
-      fields: {
-        title: string;
-        description: string;
-        file: {
-          url: string;
-          details: {
-            image: {
-              width: number;
-              height: number;
-            };
-          };
-        };
-      };
-    }[];
-  };
-  sys: {
-    id: string;
-    contentType: {
-      sys: {
-        id: "componentGallery";
-      };
-    };
-  };
-}
-
 export const getStaticPaths: GetStaticPaths = async (props) => {
-  const entries = await contentfulClient.getEntries<ContentfulPage>({
-    content_type: "page",
-  });
+  const entries = await getAllEntries();
 
   return {
     paths: entries.items.map((item) => ({
@@ -200,15 +119,12 @@ export const getStaticPaths: GetStaticPaths = async (props) => {
 
 export const getStaticProps: GetStaticProps<
   HomeProps,
-  { slug: string[] }
+  { slug?: string[] }
 > = async (props) => {
-  const response = await contentfulClient.getEntries<ContentfulPage>({
-    content_type: "page",
-    "fields.slug": props.params?.slug ? props.params.slug.join("/") : "/",
-    limit: 1,
-    include: 2,
-    locale: props.locale,
-  });
+  const response = await getEntryBySlug(
+    props.params?.slug?.join("/"),
+    props.locale
+  );
 
   if (response.items.length === 0) {
     return {
@@ -282,18 +198,3 @@ export const getStaticProps: GetStaticProps<
     revalidate: 10,
   };
 };
-
-const isRichTextSection = (
-  b: ContentfulPageSection
-): b is ContentfulPageSectionRichText =>
-  b.sys.contentType.sys.id === "componentRichText";
-
-const isCopySection = (
-  b: ContentfulPageSection
-): b is ContentfulPageSectionCopy =>
-  b.sys.contentType.sys.id === "componentCopy";
-
-const isFranchiseSection = (
-  b: ContentfulPageSection
-): b is ContentfulPageSectionFranchise =>
-  b.sys.contentType.sys.id === "componentFranchise";

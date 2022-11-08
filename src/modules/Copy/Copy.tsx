@@ -8,7 +8,6 @@ interface CopyProps {
 }
 
 export const Copy = (props: CopyProps) => {
-  console.log(props);
   return (
     <section className={styles.root}>
       <div className={styles.container}>
