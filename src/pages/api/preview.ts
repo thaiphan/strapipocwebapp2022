@@ -13,7 +13,9 @@ export default async function preview(
 
   // Fetch the headless CMS to check if the provided `slug` exists
   const post = await getEntryBySlug(
-    Array.isArray(slug) ? slug.join("/") : slug
+    Array.isArray(slug) ? slug.join("/") : slug,
+    undefined,
+    true
   );
 
   // If the slug doesn't exist prevent preview mode from being enabled

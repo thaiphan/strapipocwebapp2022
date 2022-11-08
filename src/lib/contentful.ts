@@ -1,9 +1,16 @@
 import * as contentful from "contentful";
 import { type Document } from "@contentful/rich-text-types";
+import { type EntriesQueries } from "contentful";
 
 const contentfulClient = contentful.createClient({
   space: process.env.CONTENTFUL_SPACE_ID!,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!,
+});
+
+const previewClient = contentful.createClient({
+  space: process.env.CONTENTFUL_SPACE_ID!,
+  accessToken: process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN!,
+  host: "preview.contentful.com",
 });
 
 export const getAllEntries = () => {
@@ -12,14 +19,24 @@ export const getAllEntries = () => {
   });
 };
 
-export const getEntryBySlug = (slug: string = "/", locale = "en") => {
-  return contentfulClient.getEntries<ContentfulPage>({
+export const getEntryBySlug = (
+  slug: string = "/",
+  locale = "en",
+  preview = false
+) => {
+  const payload: EntriesQueries<ContentfulPage> = {
     content_type: "page",
     "fields.slug": slug,
     limit: 1,
     include: 2,
     locale,
-  });
+  };
+
+  if (preview) {
+    return previewClient.getEntries<ContentfulPage>(payload);
+  } else {
+    return contentfulClient.getEntries<ContentfulPage>(payload);
+  }
 };
 
 interface ContentfulPage {

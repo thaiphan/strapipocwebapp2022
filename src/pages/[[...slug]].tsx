@@ -123,7 +123,8 @@ export const getStaticProps: GetStaticProps<
 > = async (props) => {
   const response = await getEntryBySlug(
     props.params?.slug?.join("/"),
-    props.locale
+    props.locale,
+    props.preview
   );
 
   if (response.items.length === 0) {
