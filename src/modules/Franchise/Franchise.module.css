@@ -4,13 +4,19 @@
     background-size: cover;
     background-repeat: no-repeat;
     color: #EEEEEE;
-    min-height: 640px;
     padding: 48px;
     position: relative;
     width: 100%;
 
     display: flex;
     align-items: center;
+}
+
+
+@media (min-width: 640px) {
+    .root {
+        min-height: 640px;
+    }
 }
 
 .root:nth-child(2) .container {
@@ -31,7 +37,12 @@
 .panel {
     background-color: rgba(0, 0, 0, 0.3);
     padding: 24px;
-    max-width: 50%;
+}
+
+@media (min-width: 640px) {
+    .panel {
+        max-width: 50%;
+    }
 }
 
 .panel a {

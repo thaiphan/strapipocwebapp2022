@@ -14,16 +14,17 @@ export const Gallery = (props: GalleryProps) => {
     <section className={styles.root}>
       <div className={styles.container}>
         {props.photos.map((photo) => (
-          <Image
-            key={photo.url}
-            alt=""
-            src={`https:${photo.url}`}
-            height={412}
-            width={412}
-            style={{
-              objectFit: "cover",
-            }}
-          />
+          <div key={photo.url} className={styles["image-container"]}>
+            <Image
+              alt=""
+              src={`https:${photo.url}`}
+              fill
+              // height={412}
+              // width={412}
+              className={styles.image}
+              sizes="(max-width: 640px) 543px, (max-width: 1024) 452px, 411px"
+            />
+          </div>
         ))}
       </div>
     </section>
