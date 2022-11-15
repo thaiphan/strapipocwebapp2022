@@ -14,6 +14,10 @@
     max-width: 1280px;
 }
 
+.container h1 {
+    margin: 0;
+}
+
 
 @media (min-width: 640px) {
     .container {

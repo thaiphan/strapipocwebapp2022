@@ -1,45 +1,23 @@
-import { type Document } from "@contentful/rich-text-types";
-import { RichText } from "components/RichText";
 import Link from "next/link";
 import styles from "./Franchise.module.css";
-
-interface FranchiseProps {
-  title: string;
-  description: Document;
-  background?: {
-    fields: {
-      file: {
-        url: string;
-      };
-    };
-  };
-  ctaTitle?: string;
-  ctaLink?: {
-    fields: {
-      slug: string;
-    };
-  };
-}
+import { type Franchise as FranchiseProps } from "lib/strapi";
 
 export const Franchise = (props: FranchiseProps) => {
   return (
     <section
       className={styles.root}
       style={{
-        backgroundImage: props.background
-          ? `url(https:${props.background.fields.file.url})`
+        backgroundImage: props.Background
+          ? `url(${process.env.NEXT_PUBLIC_ASSET_HOST}${props.Background.data.attributes.url})`
           : undefined,
       }}
     >
       <div className={styles.container}>
         <div className={styles.panel}>
-          <h2>{props.title}</h2>
-          <RichText field={props.description} />
+          <h2>{props.Title}</h2>
+          {props.Description}
           {props.ctaLink && props.ctaTitle ? (
-            <Link
-              className={styles.cta}
-              href={`/${props.ctaLink?.fields.slug}`}
-            >
+            <Link className={styles.cta} href={props.ctaLink}>
               {props.ctaTitle}
             </Link>
           ) : null}

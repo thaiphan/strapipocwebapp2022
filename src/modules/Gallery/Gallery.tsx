@@ -1,26 +1,17 @@
 import Image from "next/image";
 import styles from "./Gallery.module.css";
-
-interface GalleryProps {
-  photos: {
-    url: string;
-    width: number;
-    height: number;
-  }[];
-}
+import { type Gallery as GalleryProps } from "lib/strapi";
 
 export const Gallery = (props: GalleryProps) => {
   return (
     <section className={styles.root}>
       <div className={styles.container}>
-        {props.photos.map((photo) => (
-          <div key={photo.url} className={styles["image-container"]}>
+        {props.Photos.data.map((photo) => (
+          <div key={photo.id} className={styles["image-container"]}>
             <Image
               alt=""
-              src={`https:${photo.url}`}
+              src={`${process.env.NEXT_PUBLIC_ASSET_HOST}${photo.attributes.url}`}
               fill
-              // height={412}
-              // width={412}
               className={styles.image}
               sizes="(max-width: 640px) 543px, (max-width: 1024) 452px, 411px"
             />
