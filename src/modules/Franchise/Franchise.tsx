@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./Franchise.module.css";
 import { type Franchise as FranchiseProps } from "lib/strapi";
+import { RichText } from "components/RichText";
 
 export const Franchise = (props: FranchiseProps) => {
   return (
@@ -15,7 +16,7 @@ export const Franchise = (props: FranchiseProps) => {
       <div className={styles.container}>
         <div className={styles.panel}>
           <h2>{props.Title}</h2>
-          {props.Description}
+          <RichText field={props.Description} />
           {props.ctaLink && props.ctaTitle ? (
             <Link className={styles.cta} href={props.ctaLink}>
               {props.ctaTitle}

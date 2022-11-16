@@ -1,5 +1,6 @@
 import styles from "./Copy.module.css";
 import { type Copy as CopyProps } from "lib/strapi";
+import { RichText } from "components/RichText";
 
 export const Copy = (props: CopyProps) => {
   return (
@@ -8,7 +9,7 @@ export const Copy = (props: CopyProps) => {
         <div>
           <h1>{props.Title}</h1>
         </div>
-        <div>{props.Description}</div>
+        <RichText field={props.Description} />
       </div>
     </section>
   );
